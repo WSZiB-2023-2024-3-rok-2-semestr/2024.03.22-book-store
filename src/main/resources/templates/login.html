@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Super ksiegarnia</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
+
+<div id="content">
+    <form id="login-form" method="post">
+        <input type="text" placeholder="Login" class="text-field" name="login">
+        <input type="password" placeholder="Hasło" class="text-field" name="password">
+        <input type="submit" value="OK" class="button">
+    </form>
+</div>
+</body>
+</html>

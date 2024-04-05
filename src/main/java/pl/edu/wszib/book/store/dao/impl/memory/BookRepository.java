@@ -5,7 +5,6 @@ import pl.edu.wszib.book.store.dao.IBookDAO;
 import pl.edu.wszib.book.store.model.Book;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +31,15 @@ public class BookRepository implements IBookDAO {
 
     @Override
     public Optional<Book> getById(final int id) {
-        return this.books.stream().filter(book -> book.getId() == id).findAny();
+        return this.books.stream()
+                .filter(book -> book.getId() == id)
+                .findAny()
+                .map(this::copy);
     }
 
     @Override
     public List<Book> getAll() {
-        return this.books;
+        return this.books.stream().map(this::copy).toList();
     }
 
     @Override
@@ -45,6 +47,7 @@ public class BookRepository implements IBookDAO {
         return this.books.stream()
                 .filter(book -> book.getTitle().toLowerCase().contains(pattern.toLowerCase()) ||
                         book.getAuthor().toLowerCase().contains(pattern.toLowerCase()))
+                .map(this::copy)
                 .toList();
     }
 
@@ -55,20 +58,32 @@ public class BookRepository implements IBookDAO {
     }
 
     @Override
-    public void update(Book book) {
-
+    public void update(final Book book) {
+        this.books.stream()
+                .filter(b -> b.getId() == book.getId())
+                .findAny()
+                .ifPresent(b -> {
+            b.setTitle(book.getTitle());
+            b.setAuthor(book.getAuthor());
+            b.setIsbn(book.getIsbn());
+            b.setPrice(book.getPrice());
+            b.setQuantity(book.getQuantity());
+        });
     }
 
     @Override
     public void remove(int id) {
         this.books.removeIf(book -> book.getId() == id);
+    }
 
-        /*Iterator<Book> iterator = this.books.iterator();
-        while(iterator.hasNext()) {
-            Book book = iterator.next();
-            if(book.getId() == id) {
-                iterator.remove();
-            }
-        }*/
+    private Book copy(Book book) {
+        Book copy = new Book();
+        copy.setId(book.getId());
+        copy.setTitle(book.getTitle());
+        copy.setAuthor(book.getAuthor());
+        copy.setIsbn(book.getIsbn());
+        copy.setPrice(book.getPrice());
+        copy.setQuantity(book.getQuantity());
+        return copy;
     }
 }

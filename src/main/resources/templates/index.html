@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Super ksiegarnia</title>
     <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-<div id="logo">
-    <a href="/">
-        <img src="logo.jpg">
-    </a>
-</div>
-
-<div id="menu">
-    <a href="/" class="button">Strona Główna</a>
-    <a href="/contact" class="button">Kontakt</a>
-</div>
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
 
 <div id="content">
+    <form method="get">
+        <input type="text" name="pattern" th:value="${pattern}" class="text-field" placeholder="Szukaj">
+        <input type="submit" value="Szukaj" class="button">
+    </form>
 
+    <div class="book" th:each="book : ${books}">
+        <div th:text="${book.title}" class="title"></div>
+        <div th:text="${book.author}" class="author"></div>
+        <div th:text="${'Cena: ' + book.price}" class="price"></div>
+        <div th:text="${'ISBN: ' + book.isbn}" class="isbn"></div>
+        <div th:text="${'Ilość: ' + book.quantity}" class="quantity"></div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,0 +1,22 @@
+.book {
+    border: 1px solid red;
+    border-radius: 15px;
+    margin: 10px;
+    padding: 10px;
+    text-align: left;
+}
+
+.title {
+    font-size: 32px;
+}
+
+.author {
+    font-size: 27px;
+    margin-top: 10px;
+}
+
+.price, .isbn, .quantity {
+    font-size: 24px;
+    display: inline-block;
+    margin-right: 20px;
+}

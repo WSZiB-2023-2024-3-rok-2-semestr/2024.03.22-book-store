@@ -12,6 +12,7 @@
 
 <div id="content">
     <form id="login-form" method="post">
+        <p th:if="${loginInfo != null}" th:text="${loginInfo}"></p>
         <input type="text" placeholder="Login" class="text-field" name="login">
         <input type="password" placeholder="Hasło" class="text-field" name="password">
         <input type="submit" value="OK" class="button">

@@ -1,0 +1,16 @@
+#book-form {
+    margin-top: 50px;
+}
+
+#book-form input {
+    display: block;
+    margin: 10px auto;
+}
+
+input[type=text] {
+    width: 400px;
+}
+
+input[type=submit] {
+    width: 120px;
+}

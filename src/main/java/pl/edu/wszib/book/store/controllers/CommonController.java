@@ -1,5 +1,7 @@
 package pl.edu.wszib.book.store.controllers;
 
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,9 @@ import pl.edu.wszib.book.store.dao.impl.memory.BookRepository;
 public class CommonController {
 
     private final IBookDAO bookDAO;
+
+    @Autowired
+    HttpSession httpSession;
 
     public CommonController(IBookDAO bookDAO) {
         this.bookDAO = bookDAO;
@@ -26,7 +31,6 @@ public class CommonController {
             model.addAttribute("books", this.bookDAO.getByPattern(pattern));
             model.addAttribute("pattern", pattern);
         }
-        model.addAttribute("logged", AuthenticationController.logged);
         return "index";
     }
 

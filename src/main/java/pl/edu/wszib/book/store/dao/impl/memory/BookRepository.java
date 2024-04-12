@@ -11,20 +11,20 @@ import java.util.Optional;
 @Component
 public class BookRepository implements IBookDAO {
     List<Book> books = new ArrayList<>();
+    private final IdSequence idSequence;
 
-    private int lastId = 0;
-
-    public BookRepository() {
-        books.add(new Book(++lastId,
+    public BookRepository(IdSequence idSequence) {
+        this.idSequence = idSequence;
+        books.add(new Book(this.idSequence.getId(),
                 "Java. Podejście funkcyjne. Rozszerzanie obiektowego kodu Javy o zasady programowania funkcyjnego",
                 "Ben Weidig", "978-83-289-0651-8", 56.55, 10));
-        books.add(new Book(++lastId,
+        books.add(new Book(this.idSequence.getId(),
                 "Java. Przewodnik dla początkujących. Wydanie IX",
                 "Herbert Schildt", "978-83-289-0479-8", 83.85, 10));
-        books.add(new Book(++lastId,
+        books.add(new Book(this.idSequence.getId(),
                 "Java. Podręcznik na start",
                 "Krzysztof Krocz", "978-83-289-1024-9", 44.85, 10));
-        books.add(new Book(++lastId,
+        books.add(new Book(this.idSequence.getId(),
                 "Java. Rusz głową! Wydanie III", "Kathy Sierra, Bert Bates, Trisha Gee",
                 "978-83-283-9984-6", 89.40, 10));
     }
@@ -53,7 +53,7 @@ public class BookRepository implements IBookDAO {
 
     @Override
     public void save(Book book) {
-        book.setId(++this.lastId);
+        book.setId(this.idSequence.getId());
         this.books.add(book);
     }
 

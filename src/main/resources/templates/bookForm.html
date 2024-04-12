@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Super ksiegarnia</title>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/book.css">
+</head>
+<body>
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
+
+<div id="content">
+    <form id="book-form" method="post">
+        <input type="text" placeholder="Tytuł" class="text-field" th:field="*{bookModel.title}">
+        <input type="text" placeholder="Autor" class="text-field" th:field="*{bookModel.author}">
+        <input type="text" placeholder="ISBN" class="text-field" th:field="*{bookModel.isbn}">
+        <input type="text" placeholder="Cena" class="text-field" th:field="*{bookModel.price}">
+        <input type="text" placeholder="Ilość" class="text-field" th:field="*{bookModel.quantity}">
+        <input type="submit" value="OK" class="button">
+    </form>
+</div>
+</body>
+</html>

@@ -13,12 +13,13 @@ import java.util.Optional;
 @Component
 public class UserRepository implements IUserDAO {
     private final List<User> users = new ArrayList<>();
-    private int lastId = 0;
+    private final IdSequence idSequence;
 
-    public UserRepository() {
-        this.users.add(new User(++lastId, "Janusz", "Kowalski",
+    public UserRepository(IdSequence idSequence) {
+        this.idSequence = idSequence;
+        this.users.add(new User(this.idSequence.getId(), "Janusz", "Kowalski",
                 "janusz", DigestUtils.md5DigestAsHex("janusz123".getBytes()), User.Role.USER));
-        this.users.add(new User(++lastId, "Wiesiek", "Admin",
+        this.users.add(new User(this.idSequence.getId(), "Wiesiek", "Admin",
                 "wiesiek", DigestUtils.md5DigestAsHex("wiesiek123".getBytes()), User.Role.ADMIN));
     }
 
@@ -45,7 +46,7 @@ public class UserRepository implements IUserDAO {
 
     @Override
     public void save(User user) {
-        user.setId(++this.lastId);
+        user.setId(this.idSequence.getId());
         this.getByLogin(user.getLogin()).ifPresent(u -> {
             throw new LoginAlreadyExistException();
         });

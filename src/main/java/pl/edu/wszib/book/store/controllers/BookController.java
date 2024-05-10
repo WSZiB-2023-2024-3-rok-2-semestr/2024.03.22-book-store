@@ -13,24 +13,22 @@ import pl.edu.wszib.book.store.validators.BookValidator;
 import java.util.Optional;
 
 @Controller
+@RequestMapping(path = "/book")
 public class BookController {
 
     private final IBookService bookService;
 
-    private final HttpSession httpSession;
-
-    public BookController(IBookService bookService, HttpSession httpSession) {
+    public BookController(IBookService bookService) {
         this.bookService = bookService;
-        this.httpSession = httpSession;
     }
 
-    @RequestMapping(path = "/book/add", method = RequestMethod.GET)
+    @RequestMapping(path = "/add", method = RequestMethod.GET)
     public String add(Model model) {
         model.addAttribute("bookModel", new Book());
         return "bookForm";
     }
 
-    @PostMapping(path = "/book/add")
+    @PostMapping(path = "/add")
     public String add(@ModelAttribute Book book) {
         try {
             BookValidator.validateTitle(book.getTitle());
@@ -44,7 +42,7 @@ public class BookController {
         return "redirect:/";
     }
 
-    @RequestMapping(path = "/book/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/edit/{id}", method = RequestMethod.GET)
     public String edit(@PathVariable int id, Model model) {
         Optional<Book> bookBox = this.bookService.getById(id);
         if(bookBox.isEmpty()) {
@@ -55,7 +53,7 @@ public class BookController {
         return "bookForm";
     }
 
-    @PostMapping(path = "/book/edit/{id}")
+    @PostMapping(path = "/edit/{id}")
     public String edit(@ModelAttribute Book book, @PathVariable int id) {
         try {
             BookValidator.validateTitle(book.getTitle());

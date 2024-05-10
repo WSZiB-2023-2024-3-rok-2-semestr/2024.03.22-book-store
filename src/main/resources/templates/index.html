@@ -23,6 +23,7 @@
         <div th:text="${'ISBN: ' + book.isbn}" class="isbn"></div>
         <div th:text="${'Ilość: ' + book.quantity}" class="quantity"></div>
         <a th:href="@{/book/edit/{id}(id=${book.id})}" class="button" th:if="${session.user?.getRole() == T(pl.edu.wszib.book.store.model.User.Role).ADMIN}">Edytuj</a>
+        <a th:href="@{/cart/add/{id}(id=${book.id})}" class="button" th:if="${session.user != null}">Dodaj do koszyka</a>
     </div>
 </div>
 </body>

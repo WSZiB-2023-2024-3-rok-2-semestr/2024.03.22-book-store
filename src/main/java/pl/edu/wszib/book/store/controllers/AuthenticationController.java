@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.edu.wszib.book.store.services.IAuthenticationService;
+import pl.edu.wszib.book.store.session.SessionConstants;
 
 @Controller
 public class AuthenticationController {
@@ -34,7 +35,7 @@ public class AuthenticationController {
     public String login2(@RequestParam String login, @RequestParam String password) {
         //validacja danych wejsciowych
         this.authenticationService.login(login, password);
-        if(this.httpSession.getAttribute("user") != null) {
+        if(this.httpSession.getAttribute(SessionConstants.USER_KEY) != null) {
             return "redirect:/";
         }
         return "redirect:/login";

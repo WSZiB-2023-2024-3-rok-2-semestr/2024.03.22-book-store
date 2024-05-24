@@ -16,6 +16,7 @@
     <a href="/" class="button">Strona Główna</a>
     <a href="/contact" class="button">Kontakt</a>
     <a href="/cart" th:if="${session.user != null}" class="button">Koszyk</a>
+    <a href="/order" th:if="${session.user != null}" class="button">Zamowienia</a>
     <a href="/login" th:if="${session.user == null}" class="button">Zaloguj</a>
     <a href="/logout" th:if="${session.user != null}" class="button">Wyloguj</a>
     <a href="/book/add" th:if="${session.user?.getRole() == T(pl.edu.wszib.book.store.model.User.Role).ADMIN}" class="button">Dodaj książkę</a>

@@ -22,6 +22,8 @@ public class UserRepository implements IUserDAO {
                 "janusz", DigestUtils.md5DigestAsHex("janusz123".getBytes()), User.Role.USER));
         this.users.add(new User(this.idSequence.getId(), "Wiesiek", "Admin",
                 "wiesiek", DigestUtils.md5DigestAsHex("wiesiek123".getBytes()), User.Role.ADMIN));
+        this.users.add(new User(this.idSequence.getId(), "admin", "admin",
+                "admin", DigestUtils.md5DigestAsHex("admin".getBytes()), User.Role.ADMIN));
     }
 
     @Override

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Super ksiegarnia</title>
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="orders.css">
+    <script>
+        function position_click(wrapper) {
+            inner_wrapper = wrapper.getElementsByClassName("position-wrapper")[0];
+            if(inner_wrapper.style.display == "block") {
+                inner_wrapper.style.display = "none";
+            } else {
+                inner_wrapper.style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+<div th:replace="fragments.html :: logo"></div>
+<div th:replace="fragments.html :: menu"></div>
+
+<div id="content">
+    <div class="order-row">
+        <div>id</div>
+        <div>data</div>
+        <div>status</div>
+        <div>suma</div>
+    </div>
+
+        <div th:each="order : ${orders}" class="wrapper" onclick="position_click(this)">
+            <div class="order-row">
+                <div th:text="${order.id}"></div>
+                <div th:text="${order.getFormattedDate()}"></div>
+                <div th:text="${order.status}"></div>
+                <div th:text="${#numbers.formatDecimal(order.sum, 1, 2) + ' zł'}"></div>
+            </div>
+            <div class="position-wrapper">
+                <div class="cart-row">
+                    <div>Tytuł</div>
+                    <div>Autor</div>
+                    <div>Ilość</div>
+                    <div>Cena</div>
+                    <div>Suma</div>
+                </div>
+                <div th:each="position : ${order.positions}" class="cart-row">
+                    <div th:text="${position.book.title}"></div>
+                    <div th:text="${position.book.author}"></div>
+                    <div th:text="${position.quantity}"></div>
+                    <div th:text="${position.book.price + ' zł'}"></div>
+                    <div th:text="${#numbers.formatDecimal(position.quantity * position.book.price, 1, 2) + ' zł'}"></div>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+</html>

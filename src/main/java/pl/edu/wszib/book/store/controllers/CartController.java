@@ -8,12 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.edu.wszib.book.store.dao.IBookDAO;
-import pl.edu.wszib.book.store.model.Book;
-import pl.edu.wszib.book.store.model.Position;
-import pl.edu.wszib.book.store.session.SessionConstants;
-
-import java.util.Optional;
-import java.util.Set;
+import pl.edu.wszib.book.store.services.ICartService;
 
 @Controller
 @RequestMapping(path = "/cart")
@@ -21,32 +16,25 @@ public class CartController {
 
     private final IBookDAO bookDAO;
 
+    private final ICartService cartService;
+
     @Autowired
     HttpSession httpSession;
 
-    public CartController(IBookDAO bookDAO) {
+    public CartController(IBookDAO bookDAO, ICartService cartService) {
         this.bookDAO = bookDAO;
+        this.cartService = cartService;
     }
 
     @GetMapping(path = "/add/{id}")
     public String addToCart(@PathVariable final int id) {
-        Optional<Book> bookBox = this.bookDAO.getById(id);
-
-        bookBox.ifPresent(book -> {
-            final Set<Position> cart = (Set<Position>) this.httpSession.getAttribute(SessionConstants.CART_KEY);
-            Optional<Position> alreadyBookPosition = cart.stream()
-                    .filter(p -> p.getBook().getId() == id)
-                    .findFirst();
-
-            alreadyBookPosition.ifPresentOrElse(Position::incrementQuantity,
-                    () -> cart.add(new Position(0, book, 1)));
-        });
-
+        this.cartService.addBookToCart(id);
         return "redirect:/";
     }
 
     @GetMapping
     public String cart(Model model) {
+        model.addAttribute("cartSum", this.cartService.calculateCartSum());
         return "cart";
     }
 

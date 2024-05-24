@@ -26,6 +26,16 @@
         <div th:text="${position.book.price + ' zł'}"></div>
         <div th:text="${position.quantity * position.book.price + ' zł'}"></div>
     </div>
+
+    <div class="cart-row">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div>Suma:</div>
+        <div th:text="${cartSum}"></div>
+    </div>
+
+    <a href="/order/add" class="button">Zamów</a>
 </div>
 </body>
 </html>

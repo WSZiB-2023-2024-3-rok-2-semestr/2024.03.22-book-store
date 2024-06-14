@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface IOrderDAO {
     void persist(Order order);
-    List<Order> getOrderByUserId(int userId);
-    Optional<Order> getOrderById(int id);
+    List<Order> getOrderByUserId(Long userId);
+    Optional<Order> getOrderById(Long id);
 }

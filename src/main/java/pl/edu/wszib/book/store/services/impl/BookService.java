@@ -22,12 +22,12 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public Optional<Book> getById(int id) {
+    public Optional<Book> getById(Long id) {
         return this.bookDAO.getById(id);
     }
 
     @Override
-    public void update(Book book, int id) {
+    public void update(Book book, Long id) {
         book.setId(id);
         this.bookDAO.update(book);
     }

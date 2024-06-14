@@ -27,7 +27,7 @@ public class CartController {
     }
 
     @GetMapping(path = "/add/{id}")
-    public String addToCart(@PathVariable final int id) {
+    public String addToCart(@PathVariable final Long id) {
         this.cartService.addBookToCart(id);
         return "redirect:/";
     }

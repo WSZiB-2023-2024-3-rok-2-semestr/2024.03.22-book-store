@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IBookDAO {
-    Optional<Book> getById(int id);
+    Optional<Book> getById(Long id);
     List<Book> getAll();
     List<Book> getByPattern(String pattern);
     void save(Book book);
     void update(Book book);
-    void remove(int id);
+    void remove(Long id);
 }

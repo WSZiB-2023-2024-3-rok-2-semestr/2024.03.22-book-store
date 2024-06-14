@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class OrderRepository implements IOrderDAO {
 
     private final List<Order> orders = new ArrayList<>();
@@ -21,17 +20,17 @@ public class OrderRepository implements IOrderDAO {
 
     @Override
     public void persist(Order order) {
-        order.setId(this.idSequence.getId());
+        order.setId((long) this.idSequence.getId());
         this.orders.add(order);
     }
 
     @Override
-    public List<Order> getOrderByUserId(final int userId) {
-        return this.orders.stream().filter(o -> o.getUser().getId() == userId).toList();
+    public List<Order> getOrderByUserId(final Long userId) {
+        return this.orders.stream().filter(o -> o.getUser().getId().equals(userId)).toList();
     }
 
     @Override
-    public Optional<Order> getOrderById(final int id) {
-        return this.orders.stream().filter(o -> o.getId() == id).findFirst();
+    public Optional<Order> getOrderById(final Long id) {
+        return this.orders.stream().filter(o -> o.getId().equals(id)).findFirst();
     }
 }

@@ -32,7 +32,7 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void addBookToCart(int id) {
+    public void addBookToCart(Long id) {
         Optional<Book> bookBox = this.bookDAO.getById(id);
 
         bookBox.ifPresent(book -> {
@@ -42,7 +42,7 @@ public class CartService implements ICartService {
                     .findFirst();
 
             alreadyBookPosition.ifPresentOrElse(Position::incrementQuantity,
-                    () -> cart.add(new Position(0, book, 1)));
+                    () -> cart.add(new Position(0L, book, 1)));
         });
     }
 }

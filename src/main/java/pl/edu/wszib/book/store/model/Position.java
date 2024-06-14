@@ -1,5 +1,6 @@
 package pl.edu.wszib.book.store.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,8 +9,12 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Entity(name = "tposition")
 public class Position {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
     private int quantity;
 

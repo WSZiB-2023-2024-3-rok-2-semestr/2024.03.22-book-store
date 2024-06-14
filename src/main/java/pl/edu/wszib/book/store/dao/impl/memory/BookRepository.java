@@ -9,31 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class BookRepository implements IBookDAO {
     List<Book> books = new ArrayList<>();
     private final IdSequence idSequence;
 
     public BookRepository(IdSequence idSequence) {
         this.idSequence = idSequence;
-        books.add(new Book(this.idSequence.getId(),
+        books.add(new Book((long) this.idSequence.getId(),
                 "Java. Podejście funkcyjne. Rozszerzanie obiektowego kodu Javy o zasady programowania funkcyjnego",
                 "Ben Weidig", "978-83-289-0651-8", 56.55, 10));
-        books.add(new Book(this.idSequence.getId(),
+        books.add(new Book((long) this.idSequence.getId(),
                 "Java. Przewodnik dla początkujących. Wydanie IX",
                 "Herbert Schildt", "978-83-289-0479-8", 83.85, 10));
-        books.add(new Book(this.idSequence.getId(),
+        books.add(new Book((long) this.idSequence.getId(),
                 "Java. Podręcznik na start",
                 "Krzysztof Krocz", "978-83-289-1024-9", 44.85, 10));
-        books.add(new Book(this.idSequence.getId(),
+        books.add(new Book((long) this.idSequence.getId(),
                 "Java. Rusz głową! Wydanie III", "Kathy Sierra, Bert Bates, Trisha Gee",
                 "978-83-283-9984-6", 89.40, 10));
     }
 
     @Override
-    public Optional<Book> getById(final int id) {
+    public Optional<Book> getById(final Long id) {
         return this.books.stream()
-                .filter(book -> book.getId() == id)
+                .filter(book -> book.getId().equals(id))
                 .findAny()
                 .map(this::copy);
     }
@@ -54,14 +53,14 @@ public class BookRepository implements IBookDAO {
 
     @Override
     public void save(Book book) {
-        book.setId(this.idSequence.getId());
+        book.setId((long) this.idSequence.getId());
         this.books.add(book);
     }
 
     @Override
     public void update(final Book book) {
         this.books.stream()
-                .filter(b -> b.getId() == book.getId())
+                .filter(b -> b.getId().equals(book.getId()))
                 .findAny()
                 .ifPresent(b -> {
             b.setTitle(book.getTitle());
@@ -73,8 +72,8 @@ public class BookRepository implements IBookDAO {
     }
 
     @Override
-    public void remove(int id) {
-        this.books.removeIf(book -> book.getId() == id);
+    public void remove(Long id) {
+        this.books.removeIf(book -> book.getId().equals(id));
     }
 
     private Book copy(Book book) {

@@ -32,17 +32,18 @@ public class AppConfiguration {
         return registrationBean;
     }
 
-    @Bean
+    /*@Bean
     public Connection jdbcConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/book_store", "root", "");
+            Class.forName("org.h2.Driver");
+            //return DriverManager.getConnection("jdbc:mysql://localhost:3306/book_store", "root", "");
+            return DriverManager.getConnection("jdbc:h2:mem:testdb", "root", "");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     @Bean
     public SessionFactory sessionFactory() {

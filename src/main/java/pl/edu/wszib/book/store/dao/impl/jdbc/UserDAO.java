@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class UserDAO  implements IUserDAO {
 
     private final Connection connection;
@@ -22,16 +21,16 @@ public class UserDAO  implements IUserDAO {
     }
 
     @Override
-    public Optional<User> getById(int id) {
+    public Optional<User> getById(Long id) {
         String sql = "SELECT * FROM tuser WHERE id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
 
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getLong("id"));
                 user.setRole(User.Role.valueOf(rs.getString("role")));
                 user.setPassword(rs.getString("password"));
                 user.setLogin(rs.getString("login"));
@@ -55,7 +54,7 @@ public class UserDAO  implements IUserDAO {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getLong("id"));
                 user.setRole(User.Role.valueOf(rs.getString("role")));
                 user.setPassword(rs.getString("password"));
                 user.setLogin(rs.getString("login"));
@@ -79,7 +78,7 @@ public class UserDAO  implements IUserDAO {
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()) {
                 User user = new User();
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getLong("id"));
                 user.setRole(User.Role.valueOf(rs.getString("role")));
                 user.setPassword(rs.getString("password"));
                 user.setLogin(rs.getString("login"));
@@ -109,18 +108,18 @@ public class UserDAO  implements IUserDAO {
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
             rs.next();
-            user.setId(rs.getInt(1));
+            user.setId(rs.getLong(1));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(Long id) {
         String sql = "DELETE FROM tuser WHERE id = ?";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setLong(1, id);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -138,7 +137,7 @@ public class UserDAO  implements IUserDAO {
             preparedStatement.setString(3, user.getLogin());
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, user.getRole().name());
-            preparedStatement.setInt(6, user.getId());
+            preparedStatement.setLong(6, user.getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

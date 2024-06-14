@@ -43,7 +43,7 @@ public class BookController {
     }
 
     @RequestMapping(path = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable int id, Model model) {
+    public String edit(@PathVariable Long id, Model model) {
         Optional<Book> bookBox = this.bookService.getById(id);
         if(bookBox.isEmpty()) {
             return "redirect:/";
@@ -54,7 +54,7 @@ public class BookController {
     }
 
     @PostMapping(path = "/edit/{id}")
-    public String edit(@ModelAttribute Book book, @PathVariable int id) {
+    public String edit(@ModelAttribute Book book, @PathVariable Long id) {
         try {
             BookValidator.validateTitle(book.getTitle());
             BookValidator.validateAuthor(book.getAuthor());

@@ -17,18 +17,18 @@ public class UserRepository implements IUserDAO {
 
     public UserRepository(IdSequence idSequence) {
         this.idSequence = idSequence;
-        this.users.add(new User(this.idSequence.getId(), "Janusz", "Kowalski",
+        this.users.add(new User((long) this.idSequence.getId(), "Janusz", "Kowalski",
                 "janusz", DigestUtils.md5DigestAsHex("janusz123".getBytes()), User.Role.USER));
-        this.users.add(new User(this.idSequence.getId(), "Wiesiek", "Admin",
+        this.users.add(new User((long) this.idSequence.getId(), "Wiesiek", "Admin",
                 "wiesiek", DigestUtils.md5DigestAsHex("wiesiek123".getBytes()), User.Role.ADMIN));
-        this.users.add(new User(this.idSequence.getId(), "admin", "admin",
+        this.users.add(new User((long) this.idSequence.getId(), "admin", "admin",
                 "admin", DigestUtils.md5DigestAsHex("admin".getBytes()), User.Role.ADMIN));
     }
 
     @Override
-    public Optional<User> getById(final int id) {
+    public Optional<User> getById(final Long id) {
         return this.users.stream()
-                .filter(user -> user.getId() == id)
+                .filter(user -> user.getId().equals(id))
                 .findAny()
                 .map(this::copy);
     }
@@ -48,7 +48,7 @@ public class UserRepository implements IUserDAO {
 
     @Override
     public void save(User user) {
-        user.setId(this.idSequence.getId());
+        user.setId((long) this.idSequence.getId());
         this.getByLogin(user.getLogin()).ifPresent(u -> {
             throw new LoginAlreadyExistException();
         });
@@ -56,14 +56,14 @@ public class UserRepository implements IUserDAO {
     }
 
     @Override
-    public void remove(final int id) {
-        this.users.removeIf(user -> user.getId() == id);
+    public void remove(final Long id) {
+        this.users.removeIf(user -> user.getId().equals(id));
     }
 
     @Override
     public void update(final User user) {
         this.users.stream()
-                .filter(u -> u.getId() == user.getId())
+                .filter(u -> u.getId().equals(user.getId()))
                 .findAny()
                 .ifPresent(u -> {
             u.setName(user.getName());

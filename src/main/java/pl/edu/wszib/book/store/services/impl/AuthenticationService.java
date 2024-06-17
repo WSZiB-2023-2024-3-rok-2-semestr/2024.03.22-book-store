@@ -1,9 +1,11 @@
 package pl.edu.wszib.book.store.services.impl;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import pl.edu.wszib.book.store.dao.IUserDAO;
+import pl.edu.wszib.book.store.dao.impl.spring.data.UserDAO;
 import pl.edu.wszib.book.store.model.User;
 import pl.edu.wszib.book.store.services.IAuthenticationService;
 import pl.edu.wszib.book.store.session.SessionConstants;
@@ -12,19 +14,16 @@ import java.util.HashSet;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService implements IAuthenticationService {
 
-    private final IUserDAO userDAO;
+    /*private final IUserDAO userDAO;*/
+    private final UserDAO userDAO;
     private final HttpSession httpSession;
-
-    public AuthenticationService(IUserDAO userDAO, HttpSession httpSession) {
-        this.userDAO = userDAO;
-        this.httpSession = httpSession;
-    }
 
     @Override
     public void login(String login, String password) {
-        Optional<User> user = this.userDAO.getByLogin(login);
+        Optional<User> user = this.userDAO.findByLogin(login);
         if(user.isPresent() &&
                 DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.get().getPassword())) {
             httpSession.setAttribute(SessionConstants.USER_KEY, user.get());

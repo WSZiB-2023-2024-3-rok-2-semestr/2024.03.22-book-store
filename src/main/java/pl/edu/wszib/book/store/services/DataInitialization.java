@@ -2,11 +2,12 @@ package pl.edu.wszib.book.store.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import pl.edu.wszib.book.store.dao.IBookDAO;
 import pl.edu.wszib.book.store.dao.IUserDAO;
+import pl.edu.wszib.book.store.dao.impl.spring.data.BookDAO;
+import pl.edu.wszib.book.store.dao.impl.spring.data.UserDAO;
 import pl.edu.wszib.book.store.model.Book;
 import pl.edu.wszib.book.store.model.User;
 
@@ -14,18 +15,20 @@ import pl.edu.wszib.book.store.model.User;
 @RequiredArgsConstructor
 public class DataInitialization implements CommandLineRunner {
 
-    private final IUserDAO userDAO;
-    private final IBookDAO bookDAO;
+    /*private final IUserDAO userDAO;
+    private final IBookDAO bookDAO;*/
+
+    private final BookDAO bookDAO;
+    private final UserDAO userDAO;
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("dziala !!!");
-        /*this.userDAO.save(new User(0, "Janusz", "Kowalski",
+        this.userDAO.save(new User(null, "Janusz", "Kowalski",
                 "janusz", DigestUtils.md5DigestAsHex("janusz123".getBytes()), User.Role.USER));
-        this.userDAO.save(new User(0, "Wiesiek", "Admin",
+        this.userDAO.save(new User(null, "Wiesiek", "Admin",
                 "wiesiek", DigestUtils.md5DigestAsHex("wiesiek123".getBytes()), User.Role.ADMIN));
-        this.userDAO.save(new User(0, "admin", "admin",
-                "admin", DigestUtils.md5DigestAsHex("admin".getBytes()), User.Role.ADMIN));*/
+        this.userDAO.save(new User(null, "admin", "admin",
+                "admin", DigestUtils.md5DigestAsHex("admin".getBytes()), User.Role.ADMIN));
 
         this.bookDAO.save(new Book(null,
                 "Java. Podejście funkcyjne. Rozszerzanie obiektowego kodu Javy o zasady programowania funkcyjnego",

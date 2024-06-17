@@ -1,6 +1,7 @@
 package pl.edu.wszib.book.store.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,19 +13,13 @@ import pl.edu.wszib.book.store.services.ICartService;
 
 @Controller
 @RequestMapping(path = "/cart")
+@RequiredArgsConstructor
 public class CartController {
-
-    private final IBookDAO bookDAO;
 
     private final ICartService cartService;
 
     @Autowired
     HttpSession httpSession;
-
-    public CartController(IBookDAO bookDAO, ICartService cartService) {
-        this.bookDAO = bookDAO;
-        this.cartService = cartService;
-    }
 
     @GetMapping(path = "/add/{id}")
     public String addToCart(@PathVariable final Long id) {

@@ -1,9 +1,13 @@
 package pl.edu.wszib.book.store.services.impl;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wszib.book.store.dao.IBookDAO;
 import pl.edu.wszib.book.store.dao.IOrderDAO;
+import pl.edu.wszib.book.store.dao.impl.spring.data.BookDAO;
+import pl.edu.wszib.book.store.dao.impl.spring.data.OrderDAO;
+import pl.edu.wszib.book.store.dao.impl.spring.data.UserDAO;
 import pl.edu.wszib.book.store.exceptions.EmptyCartException;
 import pl.edu.wszib.book.store.exceptions.IncorrectCartPositionsException;
 import pl.edu.wszib.book.store.exceptions.UserNotLoggedException;
@@ -15,22 +19,21 @@ import pl.edu.wszib.book.store.services.IOrderService;
 import pl.edu.wszib.book.store.session.SessionConstants;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService implements IOrderService {
 
-    private HttpSession httpSession;
-    private final IBookDAO bookDAO;
-    private final IOrderDAO orderDAO;
-
-    public OrderService(HttpSession httpSession, IBookDAO bookDAO, IOrderDAO orderDAO) {
-        this.httpSession = httpSession;
-        this.bookDAO = bookDAO;
-        this.orderDAO = orderDAO;
-    }
+    private final HttpSession httpSession;
+    /*private final IBookDAO bookDAO;
+    private final IOrderDAO orderDAO;*/
+    private final BookDAO bookDAO;
+    private final OrderDAO orderDAO;
+    private final UserDAO userDAO;
 
     @Override
     public void confirmOrder() {
@@ -39,7 +42,7 @@ public class OrderService implements IOrderService {
             throw new EmptyCartException();
         }
         List<Position> toRemove = cart.stream().filter(p -> {
-            Optional<Book> bookBox = this.bookDAO.getById(p.getBook().getId());
+            Optional<Book> bookBox = this.bookDAO.findById(p.getBook().getId());
             return bookBox.isEmpty() || bookBox.get().getQuantity() < p.getQuantity();
         }).toList();
 
@@ -57,15 +60,15 @@ public class OrderService implements IOrderService {
                 .mapToDouble(p -> p.getQuantity() * p.getBook().getPrice()).sum());
 
         order.getPositions().forEach(p -> {
-            this.bookDAO.getById(p.getBook().getId()).ifPresent(
+            this.bookDAO.findById(p.getBook().getId()).ifPresent(
                     book -> {
                         book.setQuantity(book.getQuantity() - p.getQuantity());
-                        this.bookDAO.update(book);
+                        this.bookDAO.save(book);
                     }
             );
         });
 
-        this.orderDAO.persist(order);
+        this.orderDAO.save(order);
         cart.clear();
     }
 
@@ -76,6 +79,7 @@ public class OrderService implements IOrderService {
             throw new UserNotLoggedException();
         }
 
-        return this.orderDAO.getOrderByUserId(user.getId());
+        /*return this.orderDAO.getOrderByUserId(user.getId());*/
+        return new ArrayList<>(this.userDAO.findById(user.getId()).get().getOrders());
     }
 }

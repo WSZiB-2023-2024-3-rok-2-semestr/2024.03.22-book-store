@@ -7,18 +7,21 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import pl.edu.wszib.book.store.dao.IOrderDAO;
 import pl.edu.wszib.book.store.model.Order;
+import pl.edu.wszib.book.store.model.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class OrderDAO implements IOrderDAO {
 
     private final SessionFactory sessionFactory;
+    private final UserDAO userDAO;
 
-    public OrderDAO(SessionFactory sessionFactory) {
+    public OrderDAO(SessionFactory sessionFactory, UserDAO userDAO) {
         this.sessionFactory = sessionFactory;
+        this.userDAO = userDAO;
     }
 
     @Override
@@ -37,7 +40,8 @@ public class OrderDAO implements IOrderDAO {
 
     @Override
     public List<Order> getOrderByUserId(Long userId) {
-        return Collections.emptyList();
+        Optional<User> userBox = this.userDAO.getById(userId);
+        return new ArrayList<>(userBox.map(user -> user.getOrders()).orElse(Collections.emptySet()));
     }
 
     @Override

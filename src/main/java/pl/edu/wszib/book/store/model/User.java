@@ -3,6 +3,9 @@ package pl.edu.wszib.book.store.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,6 +22,18 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Set<Order> orders = new HashSet<>();
+
+    public User(Long id, String name, String surname, String login, String password, Role role) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
 
     public User(Long id) {
         this.id = id;

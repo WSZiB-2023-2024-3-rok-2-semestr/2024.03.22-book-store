@@ -11,7 +11,6 @@ import pl.edu.wszib.book.store.model.Book;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class BookDAO implements IBookDAO {
 
     private final SessionFactory sessionFactory;
